@@ -49,9 +49,6 @@ class DefaultConfig(object):
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET_KEY = "reallyhardtoguess"
 
-    # Searching
-    WHOOSH_BASE = os.path.join(_basedir, "whoosh_index")
-
     # Auth
     LOGIN_VIEW = "auth.login"
     REAUTH_VIEW = "auth.reauth"

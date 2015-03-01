@@ -18,7 +18,6 @@ from sqlalchemy.engine import Engine
 
 from flask import Flask, request
 from flask_login import current_user
-from flask_whooshalchemy import whoosh_index
 
 # Import the user blueprint
 from flaskbb.user.views import user
@@ -105,14 +104,6 @@ def configure_extensions(app):
 
     # Flask-And-Redis
     redis_store.init_app(app)
-
-    # Flask-WhooshAlchemy
-    with app.app_context():
-        whoosh_index(app, Post)
-        whoosh_index(app, Topic)
-        whoosh_index(app, Forum)
-        whoosh_index(app, Category)
-        whoosh_index(app, User)
 
     # Flask-Login
     login_manager.login_view = app.config["LOGIN_VIEW"]

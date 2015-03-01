@@ -26,7 +26,7 @@ from flaskbb.utils.permissions import (can_post_reply, can_post_topic,
 from flaskbb.forum.models import (Category, Forum, Topic, Post, ForumsRead,
                                   TopicsRead)
 from flaskbb.forum.forms import (QuickreplyForm, ReplyForm, NewTopicForm,
-                                 ReportForm, UserSearchForm, SearchPageForm)
+                                 ReportForm, SearchPageForm)
 from flaskbb.user.models import User
 
 forum = Blueprint("forum", __name__)
@@ -507,18 +507,10 @@ def who_is_online():
 def memberlist():
     page = request.args.get('page', 1, type=int)
 
-    search_form = UserSearchForm()
+    users = User.query.\
+        paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
 
-    if search_form.validate():
-        users = search_form.get_results().\
-            paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
-        return render_template("forum/memberlist.html", users=users,
-                               search_form=search_form)
-    else:
-        users = User.query.\
-            paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
-        return render_template("forum/memberlist.html", users=users,
-                               search_form=search_form)
+    return render_template('forum/memberlist.html', users=users)
 
 
 @forum.route("/topictracker")

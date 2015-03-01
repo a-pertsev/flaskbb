@@ -13,15 +13,7 @@
     {{ render_pagination(users, url_for('forum.memberlist')) }}
 </div><!-- /.col-pull-left -->
 <div class="pull-right" style="padding-bottom: 10px">
-  <form role="form" method="post">
-      <div class="input-group">
-          {{ search_form.hidden_tag() }}
-          {{ group_field(search_form.search_query) }}
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">{% trans %}Search{% endtrans %}</button>
-          </span>
-      </div>
-  </form>
+
 </div>
 
 <table class="table table-bordered">

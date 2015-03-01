@@ -20,7 +20,6 @@ from flask_babelex import gettext as _
 
 from flaskbb import __version__ as flaskbb_version
 from flaskbb._compat import iteritems
-from flaskbb.forum.forms import UserSearchForm
 from flaskbb.utils.settings import flaskbb_config
 from flaskbb.utils.helpers import render_template
 from flaskbb.utils.decorators import admin_required, moderator_required
@@ -99,20 +98,12 @@ def settings(slug=None):
 @moderator_required
 def users():
     page = request.args.get("page", 1, type=int)
-    search_form = UserSearchForm()
-
-    if search_form.validate():
-        users = search_form.get_results().\
-            paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
-        return render_template("management/users.html", users=users,
-                               search_form=search_form)
 
     users = User.query. \
         order_by(User.id.asc()).\
         paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
 
-    return render_template("management/users.html", users=users,
-                           search_form=search_form)
+    return render_template("management/users.html", users=users)
 
 
 @management.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
@@ -174,22 +165,13 @@ def add_user():
 @moderator_required
 def banned_users():
     page = request.args.get("page", 1, type=int)
-    search_form = UserSearchForm()
 
     users = User.query.filter(
         Group.banned == True,
         Group.id == User.primary_group_id
     ).paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
 
-    if search_form.validate():
-        users = search_form.get_results().\
-            paginate(page, flaskbb_config['USERS_PER_PAGE'], False)
-
-        return render_template("management/banned_users.html", users=users,
-                               search_form=search_form)
-
-    return render_template("management/banned_users.html", users=users,
-                           search_form=search_form)
+    return render_template("management/banned_users.html", users=users)
 
 
 @management.route("/users/<int:user_id>/ban", methods=["GET", "POST"])

@@ -81,18 +81,6 @@ class ReportForm(Form):
         return report.save(post=post, user=user)
 
 
-class UserSearchForm(Form):
-    search_query = StringField(_("Search"), validators=[
-        Optional(), Length(min=3, max=50)
-    ])
-
-    submit = SubmitField(_("Search"))
-
-    def get_results(self):
-        query = self.search_query.data
-        return User.query.whoosh_search(query)
-
-
 class SearchPageForm(Form):
     search_query = StringField(_("Criteria"), validators=[
         DataRequired(), Length(min=3, max=50)])
